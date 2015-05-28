@@ -1,0 +1,20 @@
+//created on: 28.05.2015
+package plausibcheck.adress
+
+//list any import classes here.
+
+
+
+//declare any global variables here
+
+
+
+
+rule "State should be UPPERCASE"
+
+    when
+        //conditions
+    then
+        //actions
+
+end
