@@ -8,7 +8,9 @@ import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.KieModule;
 import org.kie.api.builder.KieRepository;
+import org.kie.api.builder.Message;
 import org.kie.api.builder.ReleaseId;
+import org.kie.api.builder.Results;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
@@ -29,16 +31,10 @@ public class DroolsConfiguration {
 	}
 	
 	@Bean
-	public KieFileSystem kieFileSystem() {
+	public KieFileSystem kieFileSystem() throws IOException {
 		KieFileSystem kieFileSystem = kieServices().newKieFileSystem();
 		
-		Resource[] files = null;
-		try {
-			files = new PathMatchingResourcePatternResolver().getResources("classpath*:" + RULES_PATH + "**/*.*");
-		} catch (IOException e) {
-			//TODO: Errorhandling
-			throw new RuntimeException("Problem loading Drools-Rules.");
-		}
+		Resource[] files = new PathMatchingResourcePatternResolver().getResources("classpath*:" + RULES_PATH + "**/*.*");
 		
 		for (Resource file : files) {
 			kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
@@ -48,7 +44,7 @@ public class DroolsConfiguration {
 	}
 	
 	@Bean
-	public KieContainer kieContainer() {
+	public KieContainer kieContainer() throws IOException {
 		KieRepository kieRepository = kieServices().getRepository();
 		
 		kieRepository.addKieModule(new KieModule() {
@@ -65,12 +61,12 @@ public class DroolsConfiguration {
 	}
 	
 	@Bean
-	public KieBase kieBase() {
+	public KieBase kieBase() throws IOException {
 		return kieContainer().getKieBase();
 	}
 	
 	@Bean
-	public KieSession kieSession() {
+	public KieSession kieSession() throws IOException {
 		return kieContainer().newKieSession();
 	}
 	

@@ -24,11 +24,22 @@ public class SpringdroolsApplicationTests {
 	
 	@Test
 	public void contextLoads() {
-		kieSession.insert(new Address());
+		// Given
+	    Address address = new Address();
+	    address.setPostcode("99425");
+	    address.setStreet("Haalstreet");
+	    address.setState("ALBANIA");
+	    
+	    // When
+	    // Let´s give the Drools Knowledge-Base an Object, we can then apply rules on
+	    kieSession.insert(address);
 		int ruleFiredCount = kieSession.fireAllRules();
-		LOG.debug("Rules checked: {}" + ruleFiredCount);
 		
+
+		
+		// Then		
 		assertEquals("there´s 1 rule, so there should be 1 fired", 1, ruleFiredCount);
+		LOG.debug("Rules checked: {}" + ruleFiredCount);
 	}
 
 }

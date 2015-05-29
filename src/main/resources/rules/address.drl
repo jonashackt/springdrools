@@ -2,19 +2,18 @@
 package plausibcheck.adress
 
 //list any import classes here.
-
-
+import de.jonashackt.springdrools.internalmodel.Address
 
 //declare any global variables here
 
 
-
-
-rule "State should be UPPERCASE"
+rule "Postcode should be filled with exactly 5 numbers"
 
     when
-        //conditions
+        // conditions
+        Address(postcode != null, postcode matches "([0-9]{5})")
     then
         //actions
-
+		System.out.println("Rule applied, men!");
+		//results.applyResult("postcode", "INVALID", "Name should be in uppercase");
 end
